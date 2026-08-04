@@ -1,106 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 460" width="420" height="460">
-  <rect width="420" height="460" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 380" width="320" height="380">
+  <rect width="320" height="380" fill="#FFFFFF"/>
 
   <!-- ===================== CROWN ===================== -->
   <g>
-    <path d="M 176 40 C 176 12, 244 12, 244 40 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
-    <rect x="146" y="40" width="128" height="16" rx="2" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-    <circle cx="160" cy="48" r="3.4" fill="#8B1E1E" stroke="#111111" stroke-width="1.8"/>
-    <circle cx="179" cy="48" r="3.4" fill="#8B1E1E" stroke="#111111" stroke-width="1.8"/>
-    <circle cx="210" cy="48" r="4.2" fill="#F5F1E6" stroke="#111111" stroke-width="1.8"/>
-    <circle cx="241" cy="48" r="3.4" fill="#8B1E1E" stroke="#111111" stroke-width="1.8"/>
-    <circle cx="260" cy="48" r="3.4" fill="#8B1E1E" stroke="#111111" stroke-width="1.8"/>
-    <path d="M 158 42 L 166 22 L 176 42 Z" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-    <path d="M 244 42 L 254 22 L 262 42 Z" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-    <path d="M 168 24 Q 196 6 210 16" fill="none" stroke="#111111" stroke-width="7"/>
-    <path d="M 168 24 Q 196 6 210 16" fill="none" stroke="#B8892F" stroke-width="4"/>
-    <path d="M 252 24 Q 224 6 210 16" fill="none" stroke="#111111" stroke-width="7"/>
-    <path d="M 252 24 Q 224 6 210 16" fill="none" stroke="#B8892F" stroke-width="4"/>
-    <path d="M 202 20 L 210 9 L 218 20 Z" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-    <rect x="207" y="4" width="6" height="15" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-    <rect x="199" y="7" width="22" height="6" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 130 38 C 130 10, 190 10, 190 38 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
+    <rect x="120" y="38" width="80" height="14" rx="2" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
+    <circle cx="131" cy="45" r="3" fill="#8B1E1E" stroke="#111111" stroke-width="1.6"/>
+    <circle cx="145" cy="45" r="3" fill="#8B1E1E" stroke="#111111" stroke-width="1.6"/>
+    <circle cx="160" cy="45" r="3.6" fill="#F5F1E6" stroke="#111111" stroke-width="1.6"/>
+    <circle cx="175" cy="45" r="3" fill="#8B1E1E" stroke="#111111" stroke-width="1.6"/>
+    <circle cx="189" cy="45" r="3" fill="#8B1E1E" stroke="#111111" stroke-width="1.6"/>
+    <path d="M 126 38 L 134 22 L 142 38 Z" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 178 38 L 186 22 L 194 38 Z" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 136 24 Q 152 8 160 18" fill="none" stroke="#111111" stroke-width="6.5"/>
+    <path d="M 136 24 Q 152 8 160 18" fill="none" stroke="#B8892F" stroke-width="3.6"/>
+    <path d="M 184 24 Q 168 8 160 18" fill="none" stroke="#111111" stroke-width="6.5"/>
+    <path d="M 184 24 Q 168 8 160 18" fill="none" stroke="#B8892F" stroke-width="3.6"/>
+    <path d="M 152 20 L 160 12 L 168 20 Z" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
+    <rect x="157" y="2" width="6" height="13" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
+    <rect x="150" y="5" width="20" height="5" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
   </g>
 
   <!-- ===================== SHIELD ===================== -->
   <g>
-    <path d="M 108 96 L 312 96 L 312 168 C 312 222 258 268 210 294 C 162 268 108 222 108 168 Z"
-          fill="#111111" stroke="#B8892F" stroke-width="5"/>
-    <path d="M 120 108 L 300 108 L 300 168 C 300 214 254 254 210 278 C 166 254 120 214 120 168 Z"
-          fill="none" stroke="#B8892F" stroke-width="1.8" opacity="0.9"/>
+    <path d="M 70 70 L 250 70 L 250 140 C 250 190 205 232 160 256 C 115 232 70 190 70 140 Z"
+          fill="#111111" stroke="#B8892F" stroke-width="4.5"/>
+    <path d="M 80 80 L 240 80 L 240 140 C 240 182 203 218 160 240 C 117 218 80 182 80 140 Z"
+          fill="none" stroke="#B8892F" stroke-width="1.6" opacity="0.9"/>
   </g>
 
   <!-- ===================== MONOGRAM ===================== -->
   <g>
-    <rect x="201" y="132" width="18" height="138" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
-    <path d="M 182 140 L 238 140 L 232 128 L 188 128 Z" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
-    <path d="M 184 196 L 236 196 L 230 184 L 190 184 Z" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
-    <rect x="176" y="182" width="6" height="14" fill="#F5F1E6" stroke="#111111" stroke-width="2"/>
-    <rect x="238" y="182" width="6" height="14" fill="#F5F1E6" stroke="#111111" stroke-width="2"/>
-    <path d="M 184 190 C 158 192 148 176 152 158 C 155 146 164 144 166 152 C 163 162 168 174 184 178"
-          fill="none" stroke="#111111" stroke-width="7"/>
-    <path d="M 184 190 C 158 192 148 176 152 158 C 155 146 164 144 166 152 C 163 162 168 174 184 178"
-          fill="none" stroke="#B8892F" stroke-width="4"/>
-    <path d="M 236 190 C 262 192 272 176 268 158 C 265 146 256 144 254 152 C 257 162 252 174 236 178"
-          fill="none" stroke="#111111" stroke-width="7"/>
-    <path d="M 236 190 C 262 192 272 176 268 158 C 265 146 256 144 254 152 C 257 162 252 174 236 178"
-          fill="none" stroke="#B8892F" stroke-width="4"/>
-    <path d="M 201 252 L 219 252 L 228 276 L 192 276 Z" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
-  </g>
-
-  <!-- ===================== LIONS ===================== -->
-  <defs>
-    <g id="lion">
-      <path d="M 30 204 L 36 158 L 52 146" fill="none" stroke="#111111" stroke-width="15" stroke-linejoin="round"/>
-      <path d="M 30 204 L 36 158 L 52 146" fill="none" stroke="#B8892F" stroke-width="9" stroke-linejoin="round"/>
-      <circle cx="58" cy="142" r="19" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <ellipse cx="40" cy="108" rx="17" ry="46" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <circle cx="32" cy="72" r="15" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <path d="M 20 82 L 44 66 L 42 46 L 18 62 Z" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <polygon points="28,28 42,34 44,46 40,58 28,60 16,58 12,46 16,34"
-               fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <circle cx="28" cy="44" r="12" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <ellipse cx="14" cy="48" rx="8" ry="6" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <circle cx="9" cy="48" r="2.2" fill="#111111"/>
-      <path d="M 32 74 Q 20 56 12 44" fill="none" stroke="#111111" stroke-width="14" stroke-linecap="round"/>
-      <path d="M 32 74 Q 20 56 12 44" fill="none" stroke="#B8892F" stroke-width="8" stroke-linecap="round"/>
-      <circle cx="11" cy="42" r="5.5" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <path d="M 38 80 Q 26 64 20 54" fill="none" stroke="#111111" stroke-width="13" stroke-linecap="round"/>
-      <path d="M 38 80 Q 26 64 20 54" fill="none" stroke="#B8892F" stroke-width="7" stroke-linecap="round"/>
-      <circle cx="19" cy="52" r="5" fill="#B8892F" stroke="#111111" stroke-width="2.5"/>
-      <path d="M 62 138 Q 74 126 72 112 Q 70 100 80 96" fill="none" stroke="#111111" stroke-width="12" stroke-linecap="round"/>
-      <path d="M 62 138 Q 74 126 72 112 Q 70 100 80 96" fill="none" stroke="#B8892F" stroke-width="6" stroke-linecap="round"/>
-      <polygon points="82,88 87,93 84,99 78,99 75,93" fill="#B8892F" stroke="#111111" stroke-width="2"/>
-    </g>
-  </defs>
-  <use href="#lion" transform="translate(314 110.5) scale(0.9)"/>
-  <use href="#lion" transform="translate(420 0) scale(-1 1) translate(314 110.5) scale(0.9)"/>
-
-  <!-- ===================== SCROLLWORK & LEAVES ===================== -->
-  <g>
-    <path d="M 158 316 C 178 336 178 348 210 348 C 242 348 242 336 262 316" fill="none" stroke="#111111" stroke-width="7"/>
-    <path d="M 158 316 C 178 336 178 348 210 348 C 242 348 242 336 262 316" fill="none" stroke="#B8892F" stroke-width="4"/>
-    <path d="M 96 330 C 112 348 128 352 138 358" fill="none" stroke="#111111" stroke-width="6" stroke-linecap="round"/>
-    <path d="M 96 330 C 112 348 128 352 138 358" fill="none" stroke="#B8892F" stroke-width="3" stroke-linecap="round"/>
-    <ellipse cx="108" cy="342" rx="10" ry="5" transform="rotate(-35 108 342)" fill="#B8892F" stroke="#111111" stroke-width="2"/>
-    <ellipse cx="124" cy="350" rx="9" ry="4.5" transform="rotate(-20 124 350)" fill="#B8892F" stroke="#111111" stroke-width="2"/>
-    <ellipse cx="140" cy="356" rx="8" ry="4" transform="rotate(-5 140 356)" fill="#B8892F" stroke="#111111" stroke-width="2"/>
-    <path d="M 324 330 C 308 348 292 352 282 358" fill="none" stroke="#111111" stroke-width="6" stroke-linecap="round"/>
-    <path d="M 324 330 C 308 348 292 352 282 358" fill="none" stroke="#B8892F" stroke-width="3" stroke-linecap="round"/>
-    <ellipse cx="312" cy="342" rx="10" ry="5" transform="rotate(35 312 342)" fill="#B8892F" stroke="#111111" stroke-width="2"/>
-    <ellipse cx="296" cy="350" rx="9" ry="4.5" transform="rotate(20 296 350)" fill="#B8892F" stroke="#111111" stroke-width="2"/>
-    <ellipse cx="280" cy="356" rx="8" ry="4" transform="rotate(5 280 356)" fill="#B8892F" stroke="#111111" stroke-width="2"/>
+    <rect x="150" y="94" width="20" height="134" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 132 102 L 188 102 L 182 92 L 138 92 Z" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 134 162 L 186 162 L 180 152 L 140 152 Z" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
+    <rect x="128" y="148" width="6" height="14" fill="#F5F1E6" stroke="#111111" stroke-width="2"/>
+    <rect x="186" y="148" width="6" height="14" fill="#F5F1E6" stroke="#111111" stroke-width="2"/>
+    <path d="M 134 156 C 112 158 104 144 108 130 C 111 120 118 118 120 126 C 118 134 122 144 134 148"
+          fill="none" stroke="#111111" stroke-width="6"/>
+    <path d="M 134 156 C 112 158 104 144 108 130 C 111 120 118 118 120 126 C 118 134 122 144 134 148"
+          fill="none" stroke="#B8892F" stroke-width="3.4"/>
+    <path d="M 186 156 C 208 158 216 144 212 130 C 209 120 202 118 200 126 C 202 134 198 144 186 148"
+          fill="none" stroke="#111111" stroke-width="6"/>
+    <path d="M 186 156 C 208 158 216 144 212 130 C 209 120 202 118 200 126 C 202 134 198 144 186 148"
+          fill="none" stroke="#B8892F" stroke-width="3.4"/>
+    <path d="M 150 212 L 170 212 L 178 236 L 142 236 Z" fill="#F5F1E6" stroke="#111111" stroke-width="2.5"/>
   </g>
 
   <!-- ===================== BANNER ===================== -->
   <g>
-    <path d="M 128 396 L 140 384 L 154 398 L 140 412 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
-    <path d="M 292 396 L 280 384 L 266 398 L 280 412 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
-    <path d="M 122 362 L 298 362 L 292 378 L 298 394 L 122 394 L 128 378 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
-    <path d="M 126 366 L 294 366" stroke="#B8892F" stroke-width="2.5" fill="none"/>
-    <path d="M 128 390 L 292 390" stroke="#B8892F" stroke-width="2.5" fill="none"/>
-    <text x="210" y="382" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="10" fill="#B8892F" letter-spacing="3">BRADY LEGAL</text>
-    <circle cx="150" cy="378" r="2" fill="#B8892F"/>
-    <circle cx="270" cy="378" r="2" fill="#B8892F"/>
+    <path d="M 102 318 L 114 306 L 126 318 L 114 330 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 218 318 L 206 306 L 194 318 L 206 330 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 96 288 L 224 288 L 218 302 L 224 316 L 96 316 L 102 302 Z" fill="#8B1E1E" stroke="#111111" stroke-width="2.5"/>
+    <path d="M 100 292 L 220 292" stroke="#B8892F" stroke-width="2.2" fill="none"/>
+    <path d="M 102 312 L 218 312" stroke="#B8892F" stroke-width="2.2" fill="none"/>
+    <text x="160" y="307" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="9" fill="#B8892F" letter-spacing="3">BRADY LEGAL</text>
+    <circle cx="112" cy="302" r="1.8" fill="#B8892F"/>
+    <circle cx="208" cy="302" r="1.8" fill="#B8892F"/>
   </g>
 </svg>
