@@ -133,14 +133,11 @@
               <h3>Enquiry form</h3>
               <p class="field-note" style="font-size:0.95rem;">Fields marked &lowast; are required. We do not pass your details to anyone else.</p>
               <!--
-                FORMSPREE SETUP (takes 2 minutes, free):
-                1. Go to https://formspree.io and sign up (free account)
-                2. Create a new form — you will get an ID that looks like:  mzblwqrp
-                3. Replace YOUR_FORM_ID below so the action reads:
-                   action="https://formspree.io/f/mzblwqrp"
-                Until then the form shows a friendly notice instead of sending.
+                FORM BACKEND:
+                Submissions are sent to the Flask API (js/main.js, API_BASE) and
+                stored in the backend SQLite database. View enquiries at /admin.
               -->
-              <form data-contact-form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+              <form data-contact-form method="POST" novalidate>
                 <div class="form-grid">
                   <div class="field">
                     <label for="cf-name">Full name &lowast;</label>

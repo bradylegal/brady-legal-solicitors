@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brady Legal — Admin</title>
+<style>
+  :root {
+    --navy: #0b1d2f;
+    --gold: #b8913f;
+    --gold-light: #d6b46a;
+    --ivory: #f7f3ea;
+    --muted: #5c6b7a;
+    --danger: #a33d2e;
+    --ok: #2e7d4f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+    background: var(--ivory);
+    color: #1c2833;
+    min-height: 100vh;
+  }
+  .topbar {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .topbar .who { font-size: 13px; opacity: .85; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+  .card {
+    background: #fff;
+    border: 1px solid #e3dccb;
+    border-radius: 8px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(11, 29, 47, .06);
+  }
+  .card h2 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 8px;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 999px;
+    vertical-align: middle;
+  }
+  .badge--pending { background: #fdf0dc; color: #8a6111; border: 1px solid #e5c77e; }
+  .badge--approved { background: #e5f3ea; color: var(--ok); border: 1px solid #b5dcc6; }
+  .badge--unread { background: #fbe9e6; color: var(--danger); border: 1px solid #e8b3aa; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #eee7d8; vertical-align: top; }
+  th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+  td.msg-text { max-width: 380px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .btn {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    cursor: pointer;
+    background: var(--navy);
+    color: #fff;
+  }
+  .btn:hover { background: #12334f; }
+  .btn--gold { background: var(--gold); color: #fff; }
+  .btn--gold:hover { background: var(--gold-light); }
+  .btn--ghost { background: #fff; color: var(--navy); border: 1px solid #c9bfa8; }
+  .btn--ghost:hover { background: #f5efe2; }
+  .btn--danger { background: #fff; color: var(--danger); border: 1px solid #e0b3ab; }
+  .btn--danger:hover { background: #fdf1ef; }
+  .btn + .btn { margin-left: 6px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: var(--navy); }
+  .field input { width: 260px; max-width: 100%; padding: 9px 12px; border: 1px solid #cfc6b2; border-radius: 6px; font: inherit; }
+  .status { margin-top: 12px; font-size: 14px; min-height: 18px; }
+  .status--err { color: var(--danger); }
+  .status--ok { color: var(--ok); }
+  .count { float: right; font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .empty { color: var(--muted); font-size: 14px; padding: 14px 4px; }
+  .stars { color: var(--gold); letter-spacing: 2px; }
+  .hidden { display: none; }
+  @media (max-width: 640px) {
+    th:nth-child(3), td:nth-child(3) { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>BRADY LEGAL · ADMINISTRATION</h1>
+    <span class="who" id="who"></span>
+  </div>
+
+  <div class="wrap">
+    <!-- Login -->
+    <div class="card" id="loginCard">
+      <h2>Sign in</h2>
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginUser">Username</label>
+          <input id="loginUser" type="text" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="loginPass">Password</label>
+          <input id="loginPass" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn--gold" type="submit">Sign in</button>
+        <div class="status" id="loginStatus"></div>
+      </form>
+    </div>
+
+    <!-- Messages -->
+    <div class="card hidden" id="messagesCard">
+      <h2>Contact form enquiries <span class="count" id="msgCount"></span></h2>
+      <div id="messagesBody"></div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="card hidden" id="reviewsCard">
+      <h2>Client reviews <span class="count" id="revCount"></span></h2>
+      <div id="reviewsBody"></div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  "use strict";
+
+  var loginCard = document.getElementById("loginCard");
+  var loginForm = document.getElementById("loginForm");
+  var loginStatus = document.getElementById("loginStatus");
+  var messagesCard = document.getElementById("messagesCard");
+  var reviewsCard = document.getElementById("reviewsCard");
+  var who = document.getElementById("who");
+
+  function esc(s) {
+    var d = document.createElement("div");
+    d.textContent = s == null ? "" : String(s);
+    return d.innerHTML;
+  }
+
+  function showStatus(el, msg, ok) {
+    el.className = "status " + (ok ? "status--ok" : "status--err");
+    el.textContent = msg;
+  }
+
+  function setLoggedIn(loggedIn) {
+    loginCard.classList.toggle("hidden", loggedIn);
+    messagesCard.classList.toggle("hidden", !loggedIn);
+    reviewsCard.classList.toggle("hidden", !loggedIn);
+    who.textContent = loggedIn ? "Signed in — " +
+      '<a href="#" style="color:#d6b46a" onclick="logout()">sign out</a>' : "";
+    if (loggedIn) {
+      loadMessages();
+      loadReviews();
+    }
+  }
+
+  window.logout = function () {
+    return fetch("/api/admin/logout", { method: "POST" }).then(function () {
+      setLoggedIn(false);
+    });
+  };
+
+  loginForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: document.getElementById("loginUser").value.trim(),
+        password: document.getElementById("loginPass").value
+      })
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error("bad");
+        return res.json();
+      })
+      .then(function () {
+        loginForm.reset();
+        setLoggedIn(true);
+      })
+      .catch(function () {
+        showStatus(loginStatus, "Incorrect username or password.", false);
+      });
+  });
+
+  function loadMessages() {
+    fetch("/api/admin/messages")
+      .then(function (res) { return res.json(); })
+      .then(function (msgs) {
+        document.getElementById("msgCount").textContent = msgs.length + " total";
+        var body = document.getElementById("messagesBody");
+        if (!msgs.length) {
+          body.innerHTML = '<div class="empty">No enquiries received yet.</div>';
+          return;
+        }
+        body.innerHTML =
+          "<table><thead><tr><th>Received</th><th>Client</th><th>Matter</th><th>Message</th><th></th></tr></thead><tbody>" +
+          msgs.map(function (m) {
+            return "<tr>" +
+              '<td class="muted">' + esc(m.created_at) + "</td>" +
+              "<td><strong>" + esc(m.name) + "</strong><br>" +
+                '<span class="muted">' + esc(m.email) + (m.phone ? "<br>" + esc(m.phone) : "") + "</span></td>" +
+              "<td>" + esc(m.matter) + "</td>" +
+              '<td class="msg-text">' + esc(m.message) + "</td>" +
+              "<td><button class='btn btn--danger' data-del-msg='" + m.id + "'>Delete</button></td>" +
+            "</tr>";
+          }).join("") +
+          "</tbody></table>";
+      })
+      .then(function () {
+        document.querySelectorAll("[data-del-msg]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            fetch("/api/admin/messages/" + btn.dataset.delMsg, { method: "DELETE" })
+              .then(loadMessages);
+          });
+        });
+      });
+  }
+
+  function starRow(n) {
+    var s = "";
+    for (var i = 0; i < 5; i++) s += i < n ? "★" : "☆";
+    return s;
+  }
+
+  function loadReviews() {
+    fetch("/api/admin/reviews")
+      .then(function (res) { return res.json(); })
+      .then(function (reviews) {
+        document.getElementById("revCount").textContent = reviews.length + " total";
+        var body = document.getElementById("reviewsBody");
+        if (!reviews.length) {
+          body.innerHTML = '<div class="empty">No reviews received yet.</div>';
+          return;
+        }
+        body.innerHTML =
+          "<table><thead><tr><th>Client</th><th>Rating</th><th>Case</th><th>Review</th><th>Status</th><th></th></tr></thead><tbody>" +
+          reviews.map(function (r) {
+            var badge = r.status === "approved"
+              ? '<span class="badge badge--approved">Approved</span>'
+              : '<span class="badge badge--pending">Pending</span>';
+            return "<tr>" +
+              "<td><strong>" + esc(r.name) + "</strong><br><span class='muted'>" + esc(r.location) + "</span></td>" +
+              '<td class="stars">' + starRow(r.rating) + "</td>" +
+              "<td>" + esc(r.caseType) + "</td>" +
+              '<td class="msg-text">' + esc(r.text) + "</td>" +
+              "<td>" + badge + "</td>" +
+              "<td>" +
+                (r.status !== "approved"
+                  ? "<button class='btn btn--gold' data-approve='" + r.id + "'>Approve</button>"
+                  : "") +
+                "<button class='btn btn--danger' data-del-rev='" + r.id + "'>Delete</button>" +
+              "</td>" +
+            "</tr>";
+          }).join("") +
+          "</tbody></table>";
+      })
+      .then(function () {
+        document.querySelectorAll("[data-approve]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            fetch("/api/admin/reviews/" + btn.dataset.approve + "/approve", { method: "POST" })
+              .then(loadReviews);
+          });
+        });
+        document.querySelectorAll("[data-del-rev]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            fetch("/api/admin/reviews/" + btn.dataset.delRev, { method: "DELETE" })
+              .then(loadReviews);
+          });
+        });
+      });
+  }
+
+  fetch("/api/admin/session")
+    .then(function (res) { return res.json(); })
+    .then(function (data) { setLoggedIn(data.authenticated); });
+})();
+</script>
+</body>
+</html>

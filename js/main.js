@@ -127,6 +127,10 @@
 
   /* ---------- Reviews ---------- */
 
+  var API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    ? "http://127.0.0.1:8000"
+    : "https://brady-legal-api.onrender.com";
+
   var SEED_REVIEWS = [
     {
       name: "Margaret Whitfield",
@@ -212,8 +216,26 @@
 
   var STORAGE_KEY = "bls-user-reviews";
 
+  var serverReviews = null;
+
   var seedCounts = { 5: 118, 4: 10, 3: 3, 2: 1, 1: 0 };
   var seedTotal = 132;
+
+  function fetchServerReviews() {
+    if (serverReviews) return Promise.resolve(serverReviews);
+    return fetch(API_BASE + "/api/reviews", { headers: { "Accept": "application/json" } })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Request failed");
+        return res.json();
+      })
+      .then(function (list) {
+        serverReviews = list;
+        return list;
+      })
+      .catch(function () {
+        return null;
+      });
+  }
 
   function loadUserReviews() {
     try {
@@ -265,6 +287,22 @@
 
   function computeAverages() {
     var userReviews = loadUserReviews();
+
+    if (serverReviews) {
+      var counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      var total = 0;
+      var sum = 0;
+      serverReviews.forEach(function (r) {
+        var r5 = Math.round(r.rating);
+        if (r5 >= 1 && r5 <= 5) { counts[r5] += 1; total += 1; sum += r5; }
+      });
+      return {
+        average: total ? (sum / total) : 5,
+        total: total,
+        counts: counts
+      };
+    }
+
     var counts = { 5: seedCounts[5], 4: seedCounts[4], 3: seedCounts[3], 2: seedCounts[2], 1: seedCounts[1] };
     var total = seedTotal;
     var sum = 118 * 5 + 10 * 4 + 3 * 3 + 1 * 2;
@@ -318,11 +356,24 @@
       grid.appendChild(renderReviewCard(review, "user-" + i));
     });
 
-    SEED_REVIEWS.forEach(function (review, i) {
+    var base = serverReviews || SEED_REVIEWS;
+
+    base.forEach(function (review, i) {
       grid.appendChild(renderReviewCard(review, "seed-" + i));
     });
 
     renderRatingSummary();
+  }
+
+  function postServerReview(payload) {
+    return fetch(API_BASE + "/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok) throw new Error("Request failed");
+      return res.json();
+    });
   }
 
   var reviewForm = $("[data-review-form]");
@@ -368,14 +419,24 @@
       list.push(review);
       saveUserReviews(list);
 
-      reviewForm.reset();
+      postServerReview(review).then(function (res) {
+        reviewForm.reset();
+        if (statusEl) {
+          statusEl.className = "form-status is-visible form-status--ok";
+          statusEl.textContent = res.message || ("Thank you, " + name + ". Your review has been submitted and will appear after moderation.");
+        }
+      }).catch(function () {
+        reviewForm.reset();
+        if (statusEl) {
+          statusEl.className = "form-status is-visible form-status--ok";
+          statusEl.textContent = "Thank you, " + name + ". Your review has been added.";
+        }
+      });
 
-      if (statusEl) {
-        statusEl.className = "form-status is-visible form-status--ok";
-        statusEl.textContent = "Thank you, " + name + ". Your review has been added.";
-      }
-
-      renderReviews();
+  renderReviews();
+  fetchServerReviews().then(function () {
+    renderReviews();
+  });
 
       if (statusEl) {
         setTimeout(function () {
@@ -387,7 +448,7 @@
 
   renderReviews();
 
-  /* ---------- Contact form (Formspree) ---------- */
+  /* ---------- Contact form (backend API) ---------- */
 
   var contactForm = $("[data-contact-form]");
 
@@ -395,32 +456,27 @@
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      var endpoint = contactForm.getAttribute("action");
       var statusEl = $(".form-status", contactForm);
-      var isPlaceholder = endpoint.indexOf("YOUR_FORM_ID") !== -1;
 
-      if (isPlaceholder) {
-        if (statusEl) {
-          statusEl.className = "form-status is-visible form-status--err";
-          statusEl.textContent = "The form is not yet connected to an email address. For now, please write to bradylegal.uk.co@outlook.com or call +44 (0)20 7946 0958.";
-        }
-        return;
-      }
+      var payload = {};
+      $$("input, select, textarea", contactForm).forEach(function (el) {
+        if (el.name) payload[el.name] = el.value.trim();
+      });
 
-      fetch(endpoint, {
+      fetch(API_BASE + "/api/contact", {
         method: "POST",
-        body: new FormData(contactForm),
-        headers: { "Accept": "application/json" }
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
       })
         .then(function (res) {
           if (!res.ok) throw new Error("Request failed");
           return res.json();
         })
-        .then(function () {
+        .then(function (data) {
           contactForm.reset();
           if (statusEl) {
             statusEl.className = "form-status is-visible form-status--ok";
-            statusEl.textContent = "Thank you. Your enquiry has been sent — we will reply within one working day.";
+            statusEl.textContent = data.message || "Thank you. Your enquiry has been sent — we will reply within one working day.";
           }
         })
         .catch(function () {
