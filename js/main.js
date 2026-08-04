@@ -402,7 +402,7 @@
       if (isPlaceholder) {
         if (statusEl) {
           statusEl.className = "form-status is-visible form-status--err";
-          statusEl.textContent = "The form is not yet connected to an email address. For now, please write to enquiries@bradleylegal.co.uk or call +44 (0)20 7946 0958.";
+          statusEl.textContent = "The form is not yet connected to an email address. For now, please write to bradylegal.uk.co@outlook.com or call +44 (0)20 7946 0958.";
         }
         return;
       }
@@ -426,7 +426,7 @@
         .catch(function () {
           if (statusEl) {
             statusEl.className = "form-status is-visible form-status--err";
-            statusEl.textContent = "Something went wrong sending your enquiry. Please email enquiries@bradleylegal.co.uk or call +44 (0)20 7946 0958.";
+            statusEl.textContent = "Something went wrong sending your enquiry. Please email bradylegal.uk.co@outlook.com or call +44 (0)20 7946 0958.";
           }
         });
     });
