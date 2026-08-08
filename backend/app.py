@@ -74,6 +74,24 @@ def init_db():
             status TEXT NOT NULL DEFAULT 'pending',
             created_at TEXT NOT NULL
         );
+
+        CREATE TABLE IF NOT EXISTS subscribers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL UNIQUE,
+            created_at TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS enquiries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT DEFAULT '',
+            matter TEXT NOT NULL,
+            urgency TEXT DEFAULT '',
+            meeting TEXT DEFAULT '',
+            detail TEXT DEFAULT '',
+            created_at TEXT NOT NULL
+        );
         """
     )
     row = db.execute("SELECT COUNT(*) AS n FROM reviews").fetchone()
@@ -187,6 +205,48 @@ def submit_contact():
     return jsonify({"status": "ok", "message": "Thank you. Your enquiry has been received — we will reply within one working day."}), 201
 
 
+@app.route("/api/newsletter", methods=["POST"])
+def subscribe_newsletter():
+    init_db()
+    data = request.get_json(silent=True) or {}
+    email = clean_string(data.get("email"), 200)
+    if not email or not EMAIL_RE.match(email):
+        return jsonify({"error": "Please provide a valid email address."}), 400
+
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        get_db().execute("INSERT INTO subscribers (email, created_at) VALUES (?, ?)", (email.lower(), now))
+        get_db().commit()
+        return jsonify({"status": "ok", "message": "Thank you for subscribing to Legal Brief."}), 201
+    except sqlite3.IntegrityError:
+        return jsonify({"status": "ok", "message": "You are already on our mailing list."}), 200
+
+
+@app.route("/api/enquiry", methods=["POST"])
+def submit_enquiry():
+    init_db()
+    data = request.get_json(silent=True) or {}
+    name = clean_string(data.get("name"), 100)
+    email = clean_string(data.get("email"), 200)
+    phone = clean_string(data.get("phone"), 50)
+    matter = clean_string(data.get("matter"), 100)
+    answers = data.get("answers") or {}
+    urgency = clean_string(answers.get("urgency"), 100)
+    meeting = clean_string(answers.get("meeting"), 100)
+    detail = clean_string(answers.get("detail"), 3000)
+
+    if not name or not email or not EMAIL_RE.match(email) or not matter:
+        return jsonify({"error": "Please complete your details and choose a matter type."}), 400
+
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    get_db().execute(
+        "INSERT INTO enquiries (name, email, phone, matter, urgency, meeting, detail, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (name, email, phone, matter, urgency, meeting, detail, now),
+    )
+    get_db().commit()
+    return jsonify({"status": "ok", "message": "Thank you. Your case outline has been received — a solicitor will contact you within one working day."}), 201
+
+
 @app.route("/api/admin/login", methods=["POST"])
 def admin_login():
     data = request.get_json(silent=True) or {}
@@ -248,6 +308,40 @@ def admin_approve_review(review_id):
 def admin_delete_review(review_id):
     init_db()
     cur = get_db().execute("DELETE FROM reviews WHERE id = ?", (review_id,))
+    get_db().commit()
+    return jsonify({"deleted": cur.rowcount > 0})
+
+
+@app.route("/api/admin/subscribers", methods=["GET"])
+@login_required
+def admin_subscribers():
+    init_db()
+    rows = get_db().execute("SELECT * FROM subscribers ORDER BY id DESC").fetchall()
+    return jsonify([dict(r) for r in rows])
+
+
+@app.route("/api/admin/subscribers/<int:sub_id>", methods=["DELETE"])
+@login_required
+def admin_delete_subscriber(sub_id):
+    init_db()
+    cur = get_db().execute("DELETE FROM subscribers WHERE id = ?", (sub_id,))
+    get_db().commit()
+    return jsonify({"deleted": cur.rowcount > 0})
+
+
+@app.route("/api/admin/enquiries", methods=["GET"])
+@login_required
+def admin_enquiries():
+    init_db()
+    rows = get_db().execute("SELECT * FROM enquiries ORDER BY id DESC").fetchall()
+    return jsonify([dict(r) for r in rows])
+
+
+@app.route("/api/admin/enquiries/<int:enq_id>", methods=["DELETE"])
+@login_required
+def admin_delete_enquiry(enq_id):
+    init_db()
+    cur = get_db().execute("DELETE FROM enquiries WHERE id = ?", (enq_id,))
     get_db().commit()
     return jsonify({"deleted": cur.rowcount > 0})
 

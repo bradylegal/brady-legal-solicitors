@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="google-site-verification" content="8b2198992113b233">
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Team | Brady Legal Solicitors</title>
   <meta name="description" content="Meet the team at Brady Legal Solicitors. Jonathan Arron Little leads a small, senior team of solicitors and legal professionals in London and Birmingham.">
@@ -61,6 +69,9 @@
           <li><a class="nav__link is-active" href="team.html">Our Team</a></li>
           <li><a class="nav__link" href="contact.html">Contact</a></li>
         </ul>
+        <button class="nav__search" type="button" data-search-open aria-label="Search the site" title="Search (Ctrl+K)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
         <a class="btn btn--gold nav__cta" href="contact.html">Make an Enquiry</a>
         <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
@@ -278,6 +289,17 @@
           </ul>
         </div>
       </div>
+  <div class="footer__news">
+        <div>
+          <h4>Legal Brief &mdash; our monthly newsletter</h4>
+          <p>Practical guidance on property, employment, family and business law. No spam, unsubscribe anytime.</p>
+        </div>
+        <form class="newsletter-form" data-newsletter-form novalidate>
+          <input type="email" name="email" placeholder="Your email address" required aria-label="Email address">
+          <button class="btn btn--gold" type="submit">Subscribe</button>
+        </form>
+        <div class="form-status" role="status" aria-live="polite"></div>
+      </div>
       <div class="footer__legal">
         <span>&copy; <span data-year>2026</span> Brady Legal Solicitors. All rights reserved.</span>
         <span>Privacy Policy &middot; Complaints Procedure &middot; SRA Transparency Rules</span>
@@ -300,6 +322,18 @@
   <button class="to-top" type="button" aria-label="Back to top">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
+
+  <!-- Site search overlay -->
+  <div class="search-overlay" id="searchOverlay" hidden>
+    <div class="search-overlay__panel" role="dialog" aria-modal="true" aria-label="Site search">
+      <form class="search-overlay__form" data-search-form>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" placeholder="Search the site &mdash; try &ldquo;conveyancing&rdquo;, &ldquo;divorce&rdquo;, &ldquo;wills&rdquo;&hellip;" data-search-input aria-label="Search the site">
+        <button type="button" class="search-overlay__close" data-search-close aria-label="Close search">&#10005;</button>
+      </form>
+      <div class="search-overlay__results" data-search-results></div>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>

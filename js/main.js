@@ -488,6 +488,273 @@
     });
   }
 
+  /* ---------- Site search ---------- */
+
+  var searchOpen = $("[data-search-open]");
+  var searchOverlay = $("#searchOverlay");
+  var searchInput = $("[data-search-input]");
+  var searchResults = $("[data-search-results]");
+  var searchClose = $("[data-search-close]");
+  var searchForm = $("[data-search-form]");
+  var pageIndex = null;
+  var searchTimer = null;
+
+  function stripHtml(html) {
+    var div = document.createElement("div");
+    div.innerHTML = html
+      .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/<style[\s\S]*?<\/style>/gi, "")
+      .replace(/<svg[\s\S]*?<\/svg>/gi, " ");
+    return div.textContent.replace(/\s+/g, " ").trim();
+  }
+
+  function getPageTitle(html) {
+    var m = html.match(/<title>([\s\S]*?)<\/title>/i);
+    return m ? m[1].replace(/&amp;/g, "&").trim() : "";
+  }
+
+  function loadSearchPages() {
+    if (pageIndex) return Promise.resolve(pageIndex);
+    var pages = ["index.html", "about.html", "practice.html", "team.html", "contact.html"];
+    return Promise.all(pages.map(function (file) {
+      return fetch(file, { headers: { "Accept": "text/html" } })
+        .then(function (res) { return res.ok ? res.text() : Promise.reject(); })
+        .catch(function () { return ""; });
+    })).then(function (htmlList) {
+      pageIndex = htmlList.map(function (html, i) {
+        return {
+          file: pages[i],
+          title: getPageTitle(html),
+          text: stripHtml(html)
+        };
+      });
+      return pageIndex;
+    });
+  }
+
+  function highlight(match, text) {
+    var idx = text.toLowerCase().indexOf(match.toLowerCase());
+    if (idx === -1) return "";
+    var start = Math.max(0, idx - 90);
+    var end = Math.min(text.length, idx + match.length + 140);
+    var snippet = (start > 0 ? "&hellip; " : "") + text.slice(start, end) + (end < text.length ? " &hellip;" : "");
+    return snippet.replace(new RegExp("(" + match.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig"), "<em>$1</em>");
+  }
+
+  function runSearch(term) {
+    if (!searchResults) return;
+    term = (term || "").trim();
+    if (term.length < 2) {
+      searchResults.innerHTML = '<div class="search-overlay__empty">Type at least two letters to search the site. Try &ldquo;conveyancing&rdquo;, &ldquo;divorce&rdquo; or &ldquo;wills&rdquo;.</div>';
+      return;
+    }
+
+    loadSearchPages().then(function (pages) {
+      var query = term.toLowerCase();
+      var matches = [];
+      pages.forEach(function (page) {
+        var lower = page.text.toLowerCase();
+        var count = lower.split(query).length - 1;
+        if (count >= 1) matches.push({ page: page, count: count });
+      });
+      matches.sort(function (a, b) { return b.count - a.count; });
+
+      if (!matches.length) {
+        searchResults.innerHTML = '<div class="search-overlay__empty">No results for &ldquo;' + escapeHtml(term) + '&rdquo;. Try a practice area like &ldquo;conveyancing&rdquo; or &ldquo;family law&rdquo;.</div>';
+        return;
+      }
+
+      searchResults.innerHTML = matches.slice(0, 8).map(function (m) {
+        return '<a class="search-result" href="' + m.page.file + '" data-search-link>' +
+          '<span class="search-result__title">' + highlight(term, m.page.title) + "</span>" +
+          '<span class="search-result__snippet">' + highlight(term, m.page.text) + "</span></a>";
+      }).join("");
+    });
+  }
+
+  function openSearch() {
+    if (!searchOverlay) return;
+    searchOverlay.hidden = false;
+    if (searchInput) {
+      searchInput.focus();
+      runSearch(searchInput.value);
+    }
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSearch() {
+    if (!searchOverlay) return;
+    searchOverlay.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  if (searchOpen) {
+    searchOpen.addEventListener("click", openSearch);
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === "Escape") closeSearch();
+  });
+
+  if (searchClose) {
+    searchClose.addEventListener("click", closeSearch);
+  }
+  if (searchOverlay) {
+    searchOverlay.addEventListener("click", function (e) {
+      if (e.target === searchOverlay) closeSearch();
+    });
+  }
+  if (searchForm) {
+    searchForm.addEventListener("submit", function (e) { e.preventDefault(); });
+  }
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () { runSearch(searchInput.value); }, 250);
+    });
+  }
+
+  /* ---------- Newsletter ---------- */
+
+  var newsletterForm = $("[data-newsletter-form]");
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var emailEl = $("input[name='email']", newsletterForm);
+      var statusEl = $(".form-status", newsletterForm);
+      var email = emailEl ? emailEl.value.trim() : "";
+
+      if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        if (statusEl) {
+          statusEl.className = "form-status is-visible form-status--err";
+          statusEl.textContent = "Please enter a valid email address.";
+        }
+        return;
+      }
+
+      fetch(API_BASE + "/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ email: email })
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error("Request failed");
+          return res.json();
+        })
+        .then(function (data) {
+          newsletterForm.reset();
+          if (statusEl) {
+            statusEl.className = "form-status is-visible form-status--ok";
+            statusEl.textContent = data.message || "Thank you for subscribing.";
+          }
+        })
+        .catch(function () {
+          if (statusEl) {
+            statusEl.className = "form-status is-visible form-status--err";
+            statusEl.textContent = "Subscription is temporarily unavailable. Please try again later.";
+          }
+        });
+    });
+  }
+
+  /* ---------- Case enquiry wizard ---------- */
+
+  var wizard = $("[data-wizard]");
+
+  if (wizard) {
+    var wizardForm = $("[data-wizard-form]", wizard);
+    var steps = $$(".wizard__step", wizard);
+    var dots = $$(".wizard__dot", wizard);
+    var backBtn = $("[data-wizard-back]", wizard);
+    var nextBtn = $("[data-wizard-next]", wizard);
+    var submitBtn = $("[data-wizard-submit]", wizard);
+    var wizardStatus = $(".form-status", wizard);
+    var currentStep = 0;
+
+    function goToStep(n) {
+      currentStep = n;
+      steps.forEach(function (s, i) {
+        s.classList.toggle("is-active", i === n);
+      });
+      dots.forEach(function (d, i) {
+        d.classList.toggle("is-active", i <= n);
+      });
+      backBtn.hidden = n === 0;
+      nextBtn.hidden = n === steps.length - 1;
+      submitBtn.hidden = n !== steps.length - 1;
+      if (wizardStatus) wizardStatus.className = "form-status";
+    }
+
+    nextBtn.addEventListener("click", function () {
+      if (currentStep === 0) {
+        var matter = $('input[name="matter"]:checked', wizard);
+        if (!matter) {
+          if (wizardStatus) {
+            wizardStatus.className = "form-status is-visible form-status--err";
+            wizardStatus.textContent = "Please choose the type of matter first.";
+          }
+          return;
+        }
+      }
+      goToStep(currentStep + 1);
+    });
+
+    backBtn.addEventListener("click", function () {
+      goToStep(currentStep - 1);
+    });
+
+    wizardForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = $("[name='name']", wizardForm).value.trim();
+      var email = $("[name='email']", wizardForm).value.trim();
+      var phone = $("[name='phone']", wizardForm).value.trim();
+      var matter = $('input[name="matter"]:checked', wizard).value;
+      var urgency = $('input[name="urgency"]:checked', wizard) ? $('input[name="urgency"]:checked', wizard).value : "";
+      var meeting = $('input[name="meeting"]:checked', wizard) ? $('input[name="meeting"]:checked', wizard).value : "";
+      var detail = $("[name='detail']", wizardForm).value.trim();
+
+      if (!name || !email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        if (wizardStatus) {
+          wizardStatus.className = "form-status is-visible form-status--err";
+          wizardStatus.textContent = "Please provide your name and a valid email address.";
+        }
+        return;
+      }
+
+      fetch(API_BASE + "/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: name, email: email, phone: phone, matter: matter,
+          answers: { urgency: urgency, meeting: meeting, detail: detail }
+        })
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error("Request failed");
+          return res.json();
+        })
+        .then(function (data) {
+          if (wizardStatus) {
+            wizardStatus.className = "form-status is-visible form-status--ok";
+            wizardStatus.textContent = data.message || "Thank you. Your case outline has been received.";
+          }
+          wizardForm.reset();
+          goToStep(0);
+        })
+        .catch(function () {
+          if (wizardStatus) {
+            wizardStatus.className = "form-status is-visible form-status--err";
+            wizardStatus.textContent = "Something went wrong. Please use the enquiry form or call +44 (0)20 7946 0958.";
+          }
+        });
+    });
+  }
+
   /* ---------- Footer year ---------- */
 
   var yearEl = $("[data-year]");

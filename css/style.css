@@ -1819,3 +1819,254 @@ h4 {
     gap: 0.6rem;
   }
 }
+
+/* ==========================================================================
+   New features: site search, newsletter, case enquiry wizard
+   ========================================================================== */
+
+/* ---------- Search button in nav ---------- */
+
+.nav__search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--navy-800);
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.nav__search svg { width: 18px; height: 18px; }
+.nav__search:hover { color: var(--gold-500); border-color: var(--gold-500); }
+
+/* ---------- Search overlay ---------- */
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(8, 20, 32, 0.82);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12vh 20px 20px;
+}
+.search-overlay[hidden] { display: none; }
+.search-overlay__panel {
+  width: 100%;
+  max-width: 640px;
+  background: var(--ivory-100);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+  overflow: hidden;
+}
+.search-overlay__form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.search-overlay__form svg { width: 20px; height: 20px; color: var(--gold-500); flex: none; }
+.search-overlay__form input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--navy-800);
+  outline: none;
+}
+.search-overlay__close {
+  border: none;
+  background: transparent;
+  color: var(--navy-800);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.search-overlay__close:hover { color: var(--gold-500); }
+.search-overlay__results { max-height: 56vh; overflow-y: auto; padding: 8px 0; }
+.search-result {
+  display: block;
+  padding: 12px 18px;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  transition: background .15s;
+}
+.search-result:last-child { border-bottom: none; }
+.search-result:hover { background: var(--ivory-200); }
+.search-result__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  color: var(--navy-800);
+  margin-bottom: 3px;
+}
+.search-result__title em { color: var(--gold-600); font-style: normal; }
+.search-result__snippet { font-size: .92rem; color: #5c6b7a; line-height: 1.45; }
+.search-result__snippet em { color: var(--gold-600); font-style: normal; }
+.search-overlay__empty {
+  padding: 26px 18px;
+  text-align: center;
+  color: #5c6b7a;
+  font-size: .95rem;
+}
+.search-hint {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: .8rem;
+  color: rgba(253, 251, 245, .7);
+  letter-spacing: .02em;
+}
+
+/* ---------- Footer newsletter ---------- */
+
+.footer__news {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 3rem;
+  padding: 1.6rem 2rem;
+  background: var(--navy-700);
+  border: 1px solid rgba(220, 192, 132, .25);
+  border-radius: 10px;
+}
+.footer__news h4 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--gold-300);
+  margin-bottom: 4px;
+}
+.footer__news p { color: rgba(253, 251, 245, .72); font-size: .92rem; }
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  flex: 1 1 340px;
+  max-width: 460px;
+}
+.newsletter-form input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1px solid rgba(253, 251, 245, .25);
+  border-radius: 6px;
+  background: rgba(253, 251, 245, .08);
+  color: var(--ivory-100);
+  font: inherit;
+  outline: none;
+}
+.newsletter-form input::placeholder { color: rgba(253, 251, 245, .55); }
+.newsletter-form input:focus { border-color: var(--gold-400); }
+.footer__news .form-status { flex-basis: 100%; }
+.footer__news .form-status--ok { color: var(--gold-300); }
+.footer__news .form-status--err { color: #e8a08f; }
+
+/* ---------- Case enquiry wizard ---------- */
+
+.wizard {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--ivory-100);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 2.2rem;
+  box-shadow: 0 10px 34px rgba(11, 29, 47, .08);
+}
+.wizard__progress {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.8rem;
+}
+.wizard__dot {
+  width: 34px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ivory-300);
+  transition: background .25s;
+}
+.wizard__dot.is-active { background: var(--gold-500); }
+.wizard__step { display: none; }
+.wizard__step.is-active { display: block; animation: fadeUp .35s ease both; }
+.wizard__step h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.3rem;
+  color: var(--navy-800);
+  margin-bottom: 1.2rem;
+}
+.wizard__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 1.4rem;
+}
+.wizard__options--inline { grid-template-columns: 1fr; }
+.wizard__options label {
+  display: block;
+  cursor: pointer;
+}
+.wizard__options label input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.wizard__options label span {
+  display: block;
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--ivory-200);
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--navy-800);
+  transition: border-color .15s, background .15s, color .15s;
+}
+.wizard__options label:hover span { border-color: var(--gold-400); }
+.wizard__options label input:checked + span {
+  border-color: var(--gold-500);
+  background: var(--ivory-100);
+  color: var(--gold-600);
+  box-shadow: 0 0 0 1px var(--gold-500);
+}
+.wizard__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 1.6rem;
+}
+.wizard .form-status { margin-top: 1rem; }
+.wizard textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--ivory-100);
+  font: inherit;
+  color: var(--navy-800);
+  resize: vertical;
+  outline: none;
+}
+.wizard textarea:focus { border-color: var(--gold-500); }
+.wizard__form input[type="text"],
+.wizard__form input[type="email"],
+.wizard__form input[type="tel"] {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--ivory-100);
+  font: inherit;
+  color: var(--navy-800);
+  outline: none;
+}
+.wizard__form input:focus { border-color: var(--gold-500); }
+
+@media (max-width: 640px) {
+  .wizard { padding: 1.4rem; }
+  .footer__news { padding: 1.2rem; }
+}

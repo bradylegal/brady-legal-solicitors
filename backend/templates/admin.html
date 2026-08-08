@@ -134,10 +134,22 @@
       <div id="messagesBody"></div>
     </div>
 
+    <!-- Wizard enquiries -->
+    <div class="card hidden" id="enquiriesCard">
+      <h2>Case wizard submissions <span class="count" id="enqCount"></span></h2>
+      <div id="enquiriesBody"></div>
+    </div>
+
     <!-- Reviews -->
     <div class="card hidden" id="reviewsCard">
       <h2>Client reviews <span class="count" id="revCount"></span></h2>
       <div id="reviewsBody"></div>
+    </div>
+
+    <!-- Subscribers -->
+    <div class="card hidden" id="subsCard">
+      <h2>Newsletter subscribers <span class="count" id="subCount"></span></h2>
+      <div id="subsBody"></div>
     </div>
   </div>
 
@@ -171,7 +183,9 @@
       '<a href="#" style="color:#d6b46a" onclick="logout()">sign out</a>' : "";
     if (loggedIn) {
       loadMessages();
+      loadEnquiries();
       loadReviews();
+      loadSubscribers();
     }
   }
 
@@ -233,6 +247,73 @@
           btn.addEventListener("click", function () {
             fetch("/api/admin/messages/" + btn.dataset.delMsg, { method: "DELETE" })
               .then(loadMessages);
+          });
+        });
+      });
+  }
+
+  function loadEnquiries() {
+    fetch("/api/admin/enquiries")
+      .then(function (res) { return res.json(); })
+      .then(function (list) {
+        document.getElementById("enqCount").textContent = list.length + " total";
+        var body = document.getElementById("enquiriesBody");
+        if (!list.length) {
+          body.innerHTML = '<div class="empty">No case wizard submissions yet.</div>';
+          return;
+        }
+        body.innerHTML =
+          "<table><thead><tr><th>Received</th><th>Client</th><th>Matter</th><th>Answers</th><th></th></tr></thead><tbody>" +
+          list.map(function (e) {
+            return "<tr>" +
+              '<td class="muted">' + esc(e.created_at) + "</td>" +
+              "<td><strong>" + esc(e.name) + "</strong><br>" +
+                '<span class="muted">' + esc(e.email) + (e.phone ? "<br>" + esc(e.phone) : "") + "</span></td>" +
+              "<td>" + esc(e.matter) + "</td>" +
+              "<td><span class='muted'>Urgency:</span> " + esc(e.urgency) + "<br>" +
+                "<span class='muted'>Meeting:</span> " + esc(e.meeting) + "<br>" +
+                esc(e.detail) + "</td>" +
+              "<td><button class='btn btn--danger' data-del-enq='" + e.id + "'>Delete</button></td>" +
+            "</tr>";
+          }).join("") +
+          "</tbody></table>";
+      })
+      .then(function () {
+        document.querySelectorAll("[data-del-enq]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            fetch("/api/admin/enquiries/" + btn.dataset.delEnq, { method: "DELETE" })
+              .then(loadEnquiries);
+          });
+        });
+      });
+  }
+
+  function loadSubscribers() {
+    fetch("/api/admin/subscribers")
+      .then(function (res) { return res.json(); })
+      .then(function (list) {
+        document.getElementById("subCount").textContent = list.length + " total";
+        var body = document.getElementById("subsBody");
+        if (!list.length) {
+          body.innerHTML = '<div class="empty">No newsletter subscribers yet.</div>';
+          return;
+        }
+        body.innerHTML =
+          "<table><thead><tr><th>Email</th><th>Subscribed</th><th></th></tr></thead><tbody>" +
+          list.map(function (s) {
+            return "<tr>" +
+              "<td><strong>" + esc(s.email) + "</strong></td>" +
+              '<td class="muted">' + esc(s.created_at) + "</td>" +
+              "<td><button class='btn btn--danger' data-del-sub='" + s.id + "'>Delete</button></td>" +
+            "</tr>";
+          }).join("") +
+          "</tbody></table>";
+      })
+      .then(function () {
+        document.querySelectorAll("[data-del-sub]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            fetch("/api/admin/subscribers/" + btn.dataset.delSub, { method: "DELETE" })
+              .then(loadSubscribers);
           });
         });
       });
