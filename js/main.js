@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BRADY LEGAL SOLICITORS — main.js
+   BRADY LEGAL LLP — main.js
    Navigation, reveal animations, FAQ, reviews, cookies
    ========================================================================== */
 
@@ -134,23 +134,23 @@
   var SEED_REVIEWS = [
     {
       name: "Margaret Whitfield",
-      location: "Edgbaston, Birmingham",
+      location: "Green Bay, WI",
       date: "March 2026",
       rating: 5,
-      caseType: "Residential Conveyancing",
-      text: "We sold and purchased in a single chain that threatened to collapse twice. Jonathan kept everything moving and dealt with the other side directly when their solicitors became difficult. Completion happened on the day we were promised. I cannot fault the service."
+      caseType: "Residential Real Estate",
+      text: "We sold and purchased in a single chain that threatened to collapse twice. Jonathan kept everything moving and dealt with the other side directly when their attorneys became difficult. Completion happened on the day we were promised. I cannot fault the service."
     },
     {
       name: "David Okafor",
-      location: "Camden, London",
+      location: "Brooklyn, NY",
       date: "February 2026",
       rating: 5,
       caseType: "Employment Law",
-      text: "After being dismissed during probation I assumed I had no claim. Brady Legal took the time to look at my contract and found the flaws in the employer's process. We settled out of tribunal within twelve weeks and I received far more than I expected."
+      text: "After being dismissed during probation I assumed I had no claim. Brady Legal took the time to look at my contract and found the flaws in the employer's process. We settled before the agency hearing within twelve weeks and I received far more than I expected."
     },
     {
       name: "Sarah-Louise Harper",
-      location: "Solihull",
+      location: "Madison, WI",
       date: "January 2026",
       rating: 5,
       caseType: "Wills & Probate",
@@ -158,7 +158,7 @@
     },
     {
       name: "Robert Chen",
-      location: "Canary Wharf, London",
+      location: "Midtown, NY",
       date: "December 2025",
       rating: 4,
       caseType: "Commercial Law",
@@ -166,7 +166,7 @@
     },
     {
       name: "Priya Sharma",
-      location: "Harborne, Birmingham",
+      location: "Green Bay, WI",
       date: "November 2025",
       rating: 5,
       caseType: "Family Law",
@@ -174,23 +174,23 @@
     },
     {
       name: "Geoffrey Ashworth",
-      location: "Kensington, London",
+      location: "Upper East Side, NY",
       date: "October 2025",
       rating: 5,
       caseType: "Dispute Resolution",
-      text: "A commercial landlord refused to return our deposit of £86,000 and our previous solicitors had made little progress in six months. Brady Legal took over, wrote one robust letter, and the funds were in our account within three weeks."
+      text: "A commercial landlord refused to return our deposit of $108,000 and our previous attorneys had made little progress in six months. Brady Legal took over, wrote one robust letter, and the funds were in our account within three weeks."
     },
     {
       name: "Helen Doyle",
-      location: "Sutton Coldfield",
+      location: "Appleton, WI",
       date: "September 2025",
       rating: 5,
-      caseType: "Residential Conveyancing",
-      text: "First-time buyer with a leasehold flat, so there was a lot to unpick. They flagged the ground rent clause that every other firm had missed and negotiated it down. Their fixed fee was exactly what we paid."
+      caseType: "Residential Real Estate",
+      text: "First-time buyer in a condominium unit, so there was a lot to unpick. They flagged the common-area assessment clause that every other firm had missed and negotiated it down. Their fixed fee was exactly what we paid."
     },
     {
       name: "Michael Bancroft",
-      location: "Islington, London",
+      location: "Brooklyn, NY",
       date: "August 2025",
       rating: 4,
       caseType: "Commercial Law",
@@ -198,19 +198,19 @@
     },
     {
       name: "Fatima Ali",
-      location: "Birmingham",
+      location: "Washington, DC",
       date: "July 2025",
       rating: 5,
       caseType: "Family Law",
-      text: "Custody arrangements for my two children, handled with genuine care. They prepared me for every hearing and the barrister they instructed was excellent. My children come first and they understood that from day one."
+      text: "Custody arrangements for my two children, handled with genuine care. They prepared me for every hearing and the trial counsel they retained was excellent. My children come first and they understood that from day one."
     },
     {
       name: "Thomas Gregory",
-      location: "Richmond, London",
+      location: "Staten Island, NY",
       date: "June 2025",
       rating: 5,
       caseType: "Wills & Probate",
-      text: "Two simple wills and lasting powers of attorney, arranged for my wife and I within three weeks. Clear advice, sensible fees and the documents explained line by line. Exactly what you hope for from a solicitor."
+      text: "Two simple wills and durable powers of attorney, arranged for my wife and I within three weeks. Clear advice, sensible fees and the documents explained line by line. Exactly what you hope for from an attorney."
     }
   ];
 
@@ -482,7 +482,7 @@
         .catch(function () {
           if (statusEl) {
             statusEl.className = "form-status is-visible form-status--err";
-            statusEl.textContent = "Something went wrong sending your enquiry. Please email bradylegal.uk.co@outlook.com or call +44 (0)20 7946 0958.";
+            statusEl.textContent = "Something went wrong sending your enquiry. Please email info@bradylegalllp.com or call +1 (212) 555-0142.";
           }
         });
     });
@@ -545,7 +545,7 @@
     if (!searchResults) return;
     term = (term || "").trim();
     if (term.length < 2) {
-      searchResults.innerHTML = '<div class="search-overlay__empty">Type at least two letters to search the site. Try &ldquo;conveyancing&rdquo;, &ldquo;divorce&rdquo; or &ldquo;wills&rdquo;.</div>';
+      searchResults.innerHTML = '<div class="search-overlay__empty">Type at least two letters to search the site. Try &ldquo;real estate&rdquo;, &ldquo;divorce&rdquo; or &ldquo;wills&rdquo;.</div>';
       return;
     }
 
@@ -560,7 +560,7 @@
       matches.sort(function (a, b) { return b.count - a.count; });
 
       if (!matches.length) {
-        searchResults.innerHTML = '<div class="search-overlay__empty">No results for &ldquo;' + escapeHtml(term) + '&rdquo;. Try a practice area like &ldquo;conveyancing&rdquo; or &ldquo;family law&rdquo;.</div>';
+        searchResults.innerHTML = '<div class="search-overlay__empty">No results for &ldquo;' + escapeHtml(term) + '&rdquo;. Try a practice area like &ldquo;real estate&rdquo; or &ldquo;family law&rdquo;.</div>';
         return;
       }
 
@@ -749,7 +749,7 @@
         .catch(function () {
           if (wizardStatus) {
             wizardStatus.className = "form-status is-visible form-status--err";
-            wizardStatus.textContent = "Something went wrong. Please use the enquiry form or call +44 (0)20 7946 0958.";
+            wizardStatus.textContent = "Something went wrong. Please use the enquiry form or call +1 (212) 555-0142.";
           }
         });
     });
