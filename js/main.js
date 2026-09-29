@@ -482,7 +482,7 @@
         .catch(function () {
           if (statusEl) {
             statusEl.className = "form-status is-visible form-status--err";
-            statusEl.textContent = "Something went wrong sending your enquiry. Please email info@bradylegalllp.com or call +1 (212) 555-0142.";
+            statusEl.textContent = "Something went wrong sending your enquiry. Please email bradylegalllp.org@gmail.com or call +1 (920) 270-7240.";
           }
         });
     });
@@ -749,7 +749,7 @@
         .catch(function () {
           if (wizardStatus) {
             wizardStatus.className = "form-status is-visible form-status--err";
-            wizardStatus.textContent = "Something went wrong. Please use the enquiry form or call +1 (212) 555-0142.";
+            wizardStatus.textContent = "Something went wrong. Please use the enquiry form or call +1 (920) 270-7240.";
           }
         });
     });
