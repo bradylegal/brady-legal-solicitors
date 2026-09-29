@@ -138,7 +138,7 @@
       date: "March 2026",
       rating: 5,
       caseType: "Residential Real Estate",
-      text: "We sold and purchased in a single chain that threatened to collapse twice. Jonathan kept everything moving and dealt with the other side directly when their attorneys became difficult. Completion happened on the day we were promised. I cannot fault the service."
+      text: "We sold and purchased in a single chain that threatened to collapse twice. Lawrence kept everything moving and dealt with the other side directly when their attorneys became difficult. Completion happened on the day we were promised. I cannot fault the service."
     },
     {
       name: "David Okafor",
